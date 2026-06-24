@@ -4,10 +4,9 @@
 .pnp.*
 
 # Build outputs
-/fronted/.next/
-/fronted/out/
+/frontend/.next/
+/frontend/out/
 /backend/dist/
-/database/dist/
 **/build/
 *.tsbuildinfo
 
@@ -19,7 +18,7 @@
 .env.production.local
 *.env
 backend/.env
-fronted/.env
+frontend/.env
 
 # Debug logs
 npm-debug.log*
