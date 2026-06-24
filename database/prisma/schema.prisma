@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../backend/node_modules/.prisma/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────
+// PHASE 1 TABLES - ACTIVE NOW
+// ─────────────────────────────────────────
+
+model Feedback {
+  id               String    @id @default(cuid())
+  
+  // Customer Info
+  customerName     String    @map("customer_name")
+  shopName         String?   @map("shop_name")
+  
+  // Service Info
+  serviceUsed      String    @map("service_used")
+  // Values: "full-load" | "part-load" | "nag-load"
+  
+  // Ratings
+  starRating       Int       @map("star_rating")
+  // Values: 1 | 2 | 3 | 4 | 5
+  
+  serviceQuality   String    @map("service_quality")
+  // Values: "excellent" | "good" | "average" | "poor"
+  
+  deliveryOnTime   Boolean   @map("delivery_on_time")
+  
+  staffBehavior    String    @map("staff_behavior")
+  // Values: "excellent" | "good" | "average" | "poor"
+  
+  wouldRecommend   Boolean   @map("would_recommend")
+  
+  // Review Text
+  comment          String?
+  
+  // Status
+  isApproved       Boolean   @default(false)  @map("is_approved")
+  isDeleted        Boolean   @default(false)  @map("is_deleted")
+  isFeatured       Boolean   @default(false)  @map("is_featured")
+  
+  // Metadata
+  ipAddress        String?   @map("ip_address")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt      @map("updated_at")
+
+  @@map("feedbacks")
+}
+
+model ContactSubmission {
+  id          String    @id @default(cuid())
+  
+  name        String
+  phone       String
+  email       String?
+  subject     String?
+  message     String
+  
+  isRead      Boolean   @default(false) @map("is_read")
+  isDeleted   Boolean   @default(false) @map("is_deleted")
+  
+  ipAddress   String?   @map("ip_address")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt      @map("updated_at")
+
+  @@map("contact_submissions")
+}
+
+model RateLimit {
+  id          String    @id @default(cuid())
+  identifier  String    @unique
+  // Format: "feedback:IP" or "contact:IP"
+  
+  count       Int       @default(0)
+  resetAt     DateTime  @map("reset_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt      @map("updated_at")
+
+  @@map("rate_limits")
+}
