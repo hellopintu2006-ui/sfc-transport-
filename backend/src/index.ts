@@ -19,6 +19,9 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('SFC Transport API is running. Please access the website on http://localhost:3000');
+});
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/contact', contactRoutes);
 
@@ -43,7 +46,13 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Start Server (only if not running as a Vercel serverless function)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+// Export app for Vercel serverless function handler
+export default app;
+

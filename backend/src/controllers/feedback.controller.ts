@@ -65,7 +65,7 @@ export const submitFeedback = async (req: Request, res: Response) => {
       data: {
         ...validatedData,
         ipAddress: ip,
-        isApproved: false,
+        isApproved: true,
         isFeatured: false,
       },
     });

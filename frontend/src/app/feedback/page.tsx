@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Quote, Filter, Plus } from 'lucide-react';
 import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
@@ -63,10 +64,6 @@ const FALLBACK_FEEDBACKS = [
 
 export default function FeedbackPage() {
   const [feedbacks, setFeedbacks] = useState<FeedbackResponse[]>([]);
-  const [filters, setFilters] = useState({
-    serviceUsed: '',
-    starRating: 0
-  });
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -84,26 +81,23 @@ export default function FeedbackPage() {
   const [loading, setLoading] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  useEffect(() => {
-    const fetchFeedbacks = async () => {
-      try {
-        const queryFilters: any = {};
-        if (filters.serviceUsed) queryFilters.serviceUsed = filters.serviceUsed;
-        if (filters.starRating > 0) queryFilters.starRating = filters.starRating;
-
-        const data = await feedbackService.getAll(queryFilters);
-        if (data && data.length > 0) {
-          setFeedbacks(data);
-        } else {
-          setFeedbacks(FALLBACK_FEEDBACKS as any);
-        }
-      } catch (err) {
-        console.warn('Could not fetch reviews, using fallbacks:', err);
+  const fetchFeedbacks = async () => {
+    try {
+      const data = await feedbackService.getAll({});
+      if (data && data.length > 0) {
+        setFeedbacks(data);
+      } else {
         setFeedbacks(FALLBACK_FEEDBACKS as any);
       }
-    };
+    } catch (err) {
+      console.warn('Could not fetch reviews, using fallbacks:', err);
+      setFeedbacks(FALLBACK_FEEDBACKS as any);
+    }
+  };
+
+  useEffect(() => {
     fetchFeedbacks();
-  }, [filters]);
+  }, []);
 
   const validate = () => {
     const newErrors: any = {};
@@ -185,6 +179,7 @@ export default function FeedbackPage() {
         comment: ''
       });
       setErrors({});
+      fetchFeedbacks();
     } catch (err: any) {
       toast.error(err.message || 'Failed to submit review.');
     } finally {
@@ -208,70 +203,61 @@ export default function FeedbackPage() {
         
         {/* Left: Feedbacks List (Span 7) */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-brand-border">
+          <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-brand-border">
             <h3 className="text-lg font-bold font-heading text-slate-900 flex items-center gap-2">
-              <span>🔍</span> Filters
+              <span>💬</span> Customer Reviews
             </h3>
-            
-            <div className="flex flex-wrap gap-3">
-              <select
-                value={filters.serviceUsed}
-                onChange={(e) => setFilters(prev => ({ ...prev, serviceUsed: e.target.value }))}
-                className="px-3 py-1.5 border border-brand-border rounded-[4px] text-xs font-medium bg-white text-text-primary focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
-              >
-                <option value="">All Services</option>
-                <option value="full-load">Full Load</option>
-                <option value="part-load">Part Load</option>
-                <option value="nag-load">Nag Load</option>
-              </select>
-
-              <select
-                value={filters.starRating}
-                onChange={(e) => setFilters(prev => ({ ...prev, starRating: parseInt(e.target.value, 10) }))}
-                className="px-3 py-1.5 border border-brand-border rounded-[4px] text-xs font-medium bg-white text-text-primary focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
-              >
-                <option value="0">All Ratings</option>
-                <option value="5">5 Stars</option>
-                <option value="4">4 Stars</option>
-                <option value="3">3 Stars & Below</option>
-              </select>
-            </div>
           </div>
 
           <div className="space-y-4">
             {feedbacks.length === 0 ? (
-              <p className="text-center py-12 text-slate-500 text-sm">No reviews match the selected filters.</p>
+              <p className="text-center py-12 text-slate-500 text-sm">No reviews available.</p>
             ) : (
-              feedbacks.map((fb) => (
-                <Card key={fb.id} className="bg-white border border-slate-100 flex flex-col gap-4 text-left p-6">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-heading font-bold text-slate-900">{fb.customerName}</h4>
-                      {fb.shopName && <p className="text-xs text-text-secondary mt-0.5">{fb.shopName}</p>}
+              <>
+                {feedbacks.slice(0, 3).map((fb) => (
+                  <Card key={fb.id} className="bg-white border border-slate-100 flex flex-col gap-4 text-left p-6">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-heading font-bold text-slate-900">{fb.customerName}</h4>
+                        {fb.shopName && <p className="text-xs text-text-secondary mt-0.5">{fb.shopName}</p>}
+                      </div>
+                      <Quote size={20} className="text-primary/10 shrink-0" />
                     </div>
-                    <Quote size={20} className="text-primary/10 shrink-0" />
-                  </div>
 
-                  <div className="flex items-center gap-2">
-                    <StarRating rating={fb.starRating} starSize={14} />
-                    <Badge variant="primary" className="text-[10px] capitalize">
-                      {fb.serviceUsed.replace('-', ' ')}
-                    </Badge>
-                  </div>
+                    <div className="flex items-center gap-2">
+                      <StarRating rating={fb.starRating} starSize={14} />
+                      <Badge variant="primary" className="text-[10px] capitalize">
+                        {fb.serviceUsed.replace('-', ' ')}
+                      </Badge>
+                    </div>
 
-                  {fb.comment && (
-                    <p className="text-sm text-text-secondary leading-relaxed italic">
-                      "{fb.comment}"
-                    </p>
-                  )}
+                    {fb.comment && (
+                      <p className="text-sm text-text-secondary leading-relaxed italic">
+                        "{fb.comment}"
+                      </p>
+                    )}
 
-                  <div className="border-t border-slate-50 pt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-400">
-                    <span>Quality: <strong className="capitalize text-slate-500 font-medium">{fb.serviceQuality}</strong></span>
-                    <span>Staff: <strong className="capitalize text-slate-500 font-medium">{fb.staffBehavior}</strong></span>
-                    <span>On Time: <strong className="text-slate-500 font-medium">{fb.deliveryOnTime ? 'Yes' : 'No'}</strong></span>
+                    <div className="border-t border-slate-50 pt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-400">
+                      <span>Quality: <strong className="capitalize text-slate-500 font-medium">{fb.serviceQuality}</strong></span>
+                      <span>Staff: <strong className="capitalize text-slate-500 font-medium">{fb.staffBehavior}</strong></span>
+                      <span>On Time: <strong className="text-slate-500 font-medium">{fb.deliveryOnTime ? 'Yes' : 'No'}</strong></span>
+                    </div>
+                  </Card>
+                ))}
+
+                {feedbacks.length > 0 && (
+                  <div className="text-center pt-2">
+                    <Link href="/feedback/all" passHref legacyBehavior>
+                      <Button
+                        variant="outline"
+                        className="w-full py-3 justify-center gap-2 cursor-pointer font-bold"
+                      >
+                        🔍 View All Reviews ({feedbacks.length})
+                      </Button>
+                    </Link>
                   </div>
-                </Card>
-              ))
+                )}
+              </>
             )}
           </div>
         </div>
