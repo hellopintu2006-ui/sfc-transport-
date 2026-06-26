@@ -14,21 +14,24 @@ export default function FleetPage() {
       capacity: "1.7 Ton",
       bestFor: "Nag Load & Part Load",
       desc: "City limits ke andar heavy luggage aur quick deliveries ke liye standard carrier.",
-      status: "Well Maintained"
+      status: "Well Maintained",
+      image: "/images/pik-up.png"
     },
     {
       name: "Tata Ace (Chota Hathi)",
       capacity: "850 Kg",
       bestFor: "Nag Load (Retail Areas)",
       desc: "Retail shop supplies ke liye best option. Chhoti galion me aasan movements.",
-      status: "GPS Enabled"
+      status: "GPS Enabled",
+      image: "/images/tata-ace.png"
     },
     {
       name: "Tata 407",
       capacity: "2.5 Ton",
       bestFor: "Full Load & Part Load",
       desc: "Industrial parts aur bulk commercial loads ke liye high durability transporter.",
-      status: "Experienced Driver"
+      status: "Experienced Driver",
+      image: "/images/tata-407.png"
     }
   ];
 
@@ -64,7 +67,7 @@ export default function FleetPage() {
             {vehicles.map((v, i) => (
               <Card key={i} hoverEffect className="bg-white border border-slate-100 flex flex-col justify-between p-0 overflow-hidden text-left">
                 <div className="relative aspect-video bg-slate-900 overflow-hidden">
-                  <img src="/images/hero section.png" alt={v.name} className="object-cover w-full h-full opacity-90" />
+                  <img src={v.image} alt={v.name} className="object-cover w-full h-full opacity-90" />
                   <div className="absolute top-4 left-4">
                     <Badge variant="accent">{v.status}</Badge>
                   </div>

@@ -3,48 +3,38 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Phone, ArrowLeft, ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { SITE_CONFIG } from '@/config/site.config';
-import { Button } from '@/shared/ui/Button';
 import { cn } from '@/shared/utils/cn';
 
 const HERO_SLIDES = [
   {
-    badge: "Jaipur Ki #1 Transport Service",
-    title: "SFC Transport",
-    subtitle: "Full Load Services",
-    description: "Pura truck book karke apna bulk maal safely bhejo. VKI se Jaipur ke sabhi industrial aur commercial zones tak direct, non-stop delivery.",
-    ctaText: "WhatsApp Karo",
-    ctaLink: SITE_CONFIG.contact.whatsappLink,
-    bgOverlay: "from-blue-900/40 to-slate-900/60"
+    badge: "SFC Transport Service",
+    title: "Smarter Transport. Faster Deliveries. Nationwide Reach.",
+    description: "Experience technology-driven transport solutions built for speed, safety, and efficiency — from freight and logistics to last-mile delivery.",
+    ctaText: "See How It Works",
+    ctaLink: "/services"
   },
   {
-    badge: "Cost-Effective Part Load",
-    title: "Part Load Services",
-    subtitle: "Bachat Bhi, Sahulyat Bhi",
-    description: "Chhota ya medium maal? Pure truck ka kharcha bachao. Sirf apni space ka daam do aur safe routes par delivery pao.",
-    ctaText: "Rate Poochho",
-    ctaLink: SITE_CONFIG.contact.whatsappLink,
-    bgOverlay: "from-red-900/40 to-slate-900/60"
+    badge: "Jaipur's Trusted Carrier",
+    title: "Reliable Logistics. Damage-Free Delivery. Daily Running.",
+    description: "Transporting your industrial materials and bulk commercial goods safely across 10+ Jaipur routes with item-wise counts and verified slips.",
+    ctaText: "WhatsApp Rates",
+    ctaLink: SITE_CONFIG.contact.whatsappLink
   },
   {
-    badge: "Item-Wise Precise Delivery",
-    title: "Nag Load (Item Count)",
-    subtitle: "Ek-Ek Carton Ki Safety",
-    description: "Retailers aur suppliers ke liye best. Har item count karke delivery slip ke sath drop kiya jata hai. Vatika aur Sanganer area me retail supply ke liye perfect.",
-    ctaText: "Route Rate Jano",
-    ctaLink: "/contact",
-    bgOverlay: "from-yellow-900/20 to-slate-900/60"
+    badge: "GPS Tracked Fleet",
+    title: "Real-time Tracking. Complete Security. 13 Hr Support.",
+    description: "Our modern fleet of Mahindra Pik-Up, Tata Ace, and Tata 407 vehicles are GPS-enabled and driven by expert local route drivers.",
+    ctaText: "Get a Quote",
+    ctaLink: "/contact"
   }
 ];
 
 export const HeroSection: React.FC = () => {
-  const pathname = usePathname();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Auto slide rotation every 7 seconds
+  // Auto slide rotation every 8 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
@@ -60,278 +50,128 @@ export const HeroSection: React.FC = () => {
     setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
   };
 
-  const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/services', label: 'Services' },
-    { href: '/fleet', label: 'Fleet' },
-    { href: '/rate-card', label: 'Rate Card' },
-    { href: '/contact', label: 'Contact' },
-    { href: '/feedback', label: 'Feedback' },
-  ];
-
   return (
-    <section className="relative min-h-[92vh] md:min-h-screen bg-slate-950 flex items-center justify-center p-4 md:p-6 overflow-hidden">
-      {/* Dark Cinematic Background Overlay & Glow */}
-      <div className="absolute inset-0 z-0 bg-radial-[circle_at_top_right] from-blue-900/30 via-slate-950 to-slate-950" />
+    <section className="relative min-h-screen w-full flex flex-col justify-between text-white overflow-hidden bg-slate-950 font-body">
       
-      {/* Decorative Grid Patterns */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0 select-none">
+        <Image
+          src="/images/hero section.png"
+          alt="SFC Transport Background Truck"
+          fill
+          // className="object-cover object-center brightness-[0.35] contrast-[1.05]"
+          priority
+        />
+        {/* Radial Glow & Gradients to optimize text readability on left side */}
+        <div className="absolute inset-0 bg-radial-[circle_at_top_right] from-blue-900/10 via-slate-950/40 to-slate-950/80 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/40 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/30 to-transparent z-10" />
+      </div>
 
-      {/* Giant Floating White Rounded Card */}
-      <div className="relative z-10 w-full max-w-7xl bg-white/95 rounded-3xl border border-slate-200/50 shadow-2xl p-4 md:p-8 flex flex-col justify-between min-h-[85vh] backdrop-blur-md">
+      {/* Main Layout Container (Padding-top adjusted for sticky header) */}
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex-1 flex flex-col justify-between pt-36 pb-12">
         
-        {/* Navigation Bar Header inside the card */}
-        <header className="relative w-full z-30">
-          <div className="glass-nav rounded-full px-4 md:px-8 py-3 flex items-center justify-between shadow-sm relative h-16">
-            
-            {/* Left: Desktop Navigation Menu */}
-            <nav className="hidden lg:flex items-center gap-5">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "text-xs xl:text-sm font-medium transition-colors hover:text-primary tracking-wide",
-                      isActive ? "text-primary font-bold" : "text-text-secondary"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
-            </nav>
+        {/* Empty placeholder to occupy upper layout space */}
+        <div />
 
-            {/* Mobile Logo & Hamburger Trigger (Hidden on Desktop) */}
-            <div className="lg:hidden flex items-center justify-between w-full">
-              <Link href="/" className="flex items-center gap-1 font-heading font-bold text-lg">
-                <span className="text-primary">SFC</span>
-                <span className="text-secondary">Transport</span>
-              </Link>
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-text-primary p-2 focus:outline-none cursor-pointer"
-              >
-                {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
-            </div>
-
-            {/* Center: Absolute Floating Logo Capsule (Desktop Only) */}
-            <div className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 -top-5 z-40">
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-1.5 shadow-md flex items-center justify-center w-24 h-24 overflow-hidden relative group hover:shadow-lg transition-shadow duration-300">
-                <Image
-                  src="/images/logo.jpeg"
-                  alt="SFC Transport Logo"
-                  width={80}
-                  height={80}
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </div>
-
-            {/* Right: Desktop Action Buttons */}
-            <div className="hidden lg:flex items-center gap-2.5">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => window.open(`tel:${SITE_CONFIG.contact.phoneCall}`)}
-                className="gap-1.5 font-medium border-slate-300 text-text-primary"
-              >
-                Call: {SITE_CONFIG.contact.phoneCall}
-              </Button>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => window.open(SITE_CONFIG.contact.whatsappLink, '_blank')}
-                className="font-medium bg-secondary text-white hover:bg-secondary/90 border-0"
-              >
-                WhatsApp Karo
-              </Button>
-            </div>
-          </div>
-
-          {/* Mobile Dropdown Nav Menu */}
-          {mobileMenuOpen && (
-            <div className="lg:hidden absolute left-0 right-0 mt-2 bg-white border border-slate-100 rounded-2xl p-4 shadow-xl flex flex-col gap-3 z-50">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={cn(
-                      "px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                      isActive ? "bg-primary/5 text-primary" : "text-text-secondary hover:bg-slate-50"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
-              <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-100">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    window.open(`tel:${SITE_CONFIG.contact.phoneCall}`);
-                  }}
-                  className="w-full text-xs text-center py-2 justify-center"
-                >
-                  Call Karo
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    window.open(SITE_CONFIG.contact.whatsappLink, '_blank');
-                  }}
-                  className="w-full text-xs text-center py-2 justify-center"
-                >
-                  WhatsApp
-                </Button>
-              </div>
-            </div>
-          )}
-        </header>
-
-        {/* Content Area: Two-Column (Headline on Left, Featured Image on Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center my-6 md:my-10 flex-1">
+        {/* Left Column Content Area */}
+        <div className="max-w-3xl flex flex-col items-start gap-4 sm:gap-6 my-auto text-left">
           
-          {/* Left Column: Bold Marketing Headlines & Copy (Span 7) */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left gap-4 md:gap-6">
-            
-            {/* Tag Badge */}
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-secondary/15 text-secondary border border-secondary/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              {HERO_SLIDES[currentSlide].badge}
-            </span>
+          {/* Subtle Tag Badge */}
+          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-red-600/20 text-red-400 border border-red-600/30 animate-pulse">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+            {HERO_SLIDES[currentSlide].badge}
+          </span>
 
-            {/* Main Headline */}
-            <div className="space-y-1">
-              <h1 className="text-4xl sm:text-5xl xl:text-6xl font-black tracking-tight text-slate-900 leading-none">
-                {HERO_SLIDES[currentSlide].title}
-              </h1>
-              <h2 className="text-xl sm:text-2xl font-bold text-primary tracking-wide">
-                {HERO_SLIDES[currentSlide].subtitle}
-              </h2>
-              <p className="text-sm font-semibold tracking-widest text-slate-400 font-heading uppercase mt-0.5">
-                {SITE_CONFIG.fullName}
-              </p>
-            </div>
+          {/* Main Slide Title */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.08] max-w-2xl font-heading">
+            {HERO_SLIDES[currentSlide].title}
+          </h1>
 
-            {/* Body Copy */}
-            <p className="text-sm sm:text-base leading-relaxed text-text-secondary max-w-xl">
-              {HERO_SLIDES[currentSlide].description}
-            </p>
+          {/* Slide Description */}
+          <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed max-w-xl">
+            {HERO_SLIDES[currentSlide].description}
+          </p>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={() => {
-                  if (HERO_SLIDES[currentSlide].ctaLink.startsWith('http')) {
-                    window.open(HERO_SLIDES[currentSlide].ctaLink, '_blank');
-                  } else {
-                    window.location.href = HERO_SLIDES[currentSlide].ctaLink;
-                  }
-                }}
-                className="w-full sm:w-auto shadow-md"
-              >
-                {HERO_SLIDES[currentSlide].ctaText}
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => window.location.href = '/contact'}
-                className="w-full sm:w-auto border-slate-300 text-text-primary hover:bg-slate-50"
-              >
-                Routes Aur Rates
-              </Button>
-            </div>
-            
-            {/* Quick trust badges */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-text-secondary font-medium">
-              <span className="flex items-center gap-1">✅ Daily Service</span>
-              <span className="flex items-center gap-1">⏰ 10 AM - 11 PM</span>
-              <span className="flex items-center gap-1">📍 10+ Jaipur Routes</span>
-            </div>
+          {/* Action Call to Action Button */}
+          <div className="mt-2 flex w-full sm:w-auto">
+            <Link
+              href={HERO_SLIDES[currentSlide].ctaLink}
+              target={HERO_SLIDES[currentSlide].ctaLink.startsWith('http') ? '_blank' : '_self'}
+              className="inline-flex items-center justify-between gap-4 bg-white text-slate-950 font-bold px-6 py-3 rounded-full hover:bg-slate-100 transition-colors shadow-xl group text-sm sm:text-base w-full sm:w-auto cursor-pointer"
+            >
+              <span>{HERO_SLIDES[currentSlide].ctaText}</span>
+              <span className="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center group-hover:translate-x-0.5 transition-transform shrink-0">
+                <ArrowRight size={12} />
+              </span>
+            </Link>
           </div>
 
-          {/* Right Column: Featured Image inside beautiful styled frame (Span 5) */}
-          <div className="lg:col-span-5 w-full flex justify-center items-center">
-            <div className="relative w-full max-w-md aspect-video lg:aspect-[4/3] rounded-2xl overflow-hidden border border-slate-200 shadow-lg group bg-slate-900">
-              <Image
-                src="/images/hero section.png"
-                alt="SFC Transport Fleet"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-w-768px) 100vw, 450px"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-4">
-                <div className="text-white">
-                  <p className="text-xs text-accent font-semibold tracking-widest uppercase">Safe Delivery</p>
-                  <p className="text-sm font-bold">VKI Se Sitapura & Vatika Daily Routes</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* Bottom Bar: Stats on Left, Interactive Slider Navigation on Right */}
-        <div className="border-t border-slate-100 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        {/* Bottom Bar: Statistics on Left, Interactive Slide Navigator on Right */}
+        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-6">
           
-          {/* Bottom Left: Statistics */}
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-6 md:gap-10">
+          {/* Stats Section */}
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-8 md:gap-12 w-full sm:w-auto">
             <div>
-              <p className="text-2xl font-black text-primary leading-none">10+</p>
-              <p className="text-xs text-text-secondary font-semibold uppercase tracking-wider mt-1">Routes Covered</p>
+              <p className="text-3xl font-black text-white leading-none">10+</p>
+              <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-1.5">Routes Covered</p>
             </div>
-            <div className="h-8 w-px bg-slate-200 hidden sm:block" />
+            <div className="h-8 w-px bg-white/10 hidden sm:block" />
             <div>
-              <p className="text-2xl font-black text-secondary leading-none">Daily</p>
-              <p className="text-xs text-text-secondary font-semibold uppercase tracking-wider mt-1">Running Service</p>
+              <p className="text-3xl font-black text-white leading-none">Daily</p>
+              <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-1.5">Running Service</p>
             </div>
-            <div className="h-8 w-px bg-slate-200 hidden sm:block" />
+            <div className="h-8 w-px bg-white/10 hidden sm:block" />
             <div>
-              <p className="text-2xl font-black text-slate-800 leading-none">13 Hr</p>
-              <p className="text-xs text-text-secondary font-semibold uppercase tracking-wider mt-1">10 AM - 11 PM Support</p>
+              <p className="text-3xl font-black text-white leading-none">13 Hr</p>
+              <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-1.5">Support Desk</p>
             </div>
           </div>
 
-          {/* Bottom Right: Slider Control Actions */}
-          <div className="flex items-center gap-4">
-            {/* Slide Counter */}
-            <span className="font-heading text-sm font-bold text-slate-400">
-              <span className="text-text-primary">0{currentSlide + 1}</span> / 0{HERO_SLIDES.length}
-            </span>
-
-            {/* Nav Arrows */}
+          {/* Slide Navigator Actions */}
+          <div className="flex items-center gap-4 bg-slate-950/60 border border-white/10 backdrop-blur-md px-5 py-2.5 rounded-full shadow-lg">
+            
+            {/* Prev/Next Navigation Controls */}
             <div className="flex gap-2">
               <button
                 onClick={prevSlide}
-                className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-text-primary hover:bg-slate-50 transition-colors cursor-pointer"
+                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-slate-950 transition-colors cursor-pointer"
+                aria-label="Previous Slide"
               >
-                <ArrowLeft size={16} />
+                <ArrowLeft size={14} />
               </button>
               <button
                 onClick={nextSlide}
-                className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-text-primary hover:bg-slate-50 transition-colors cursor-pointer"
+                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-slate-950 transition-colors cursor-pointer"
+                aria-label="Next Slide"
               >
-                <ArrowRight size={16} />
+                <ArrowRight size={14} />
               </button>
             </div>
+
+            {/* Slider Progress Active Bar */}
+            <div className="w-12 h-[2px] bg-white/10 relative rounded overflow-hidden">
+              <div 
+                className="absolute left-0 top-0 h-full bg-red-600 transition-all duration-300 rounded"
+                style={{ width: `${((currentSlide + 1) / HERO_SLIDES.length) * 100}%` }}
+              />
+            </div>
+
+            {/* Counter */}
+            <span className="font-heading text-xs font-bold text-slate-400">
+              <span className="text-white">0{currentSlide + 1}</span> / 0{HERO_SLIDES.length}
+            </span>
+
           </div>
+
         </div>
-        
+
       </div>
+
     </section>
   );
 };
+
 export default HeroSection;

@@ -15,7 +15,8 @@ export const GallerySection: React.FC = () => {
       bestFor: "Nag Load & Part Load",
       type: "Medium Carrier",
       desc: "City limits me quick delivery ke liye best. Sanganer aur Mansarovar routes par active.",
-      status: "Well Maintained"
+      status: "Well Maintained",
+      image: "/images/pik-up.png"
     },
     {
       name: "Tata Ace (Chota Hathi)",
@@ -23,7 +24,8 @@ export const GallerySection: React.FC = () => {
       bestFor: "Nag Load (Retail Deliveries)",
       type: "Micro Truck",
       desc: "Chhoti galion aur retail shops tak maal pahunchane ke liye sabse useful vehicle.",
-      status: "GPS Enabled"
+      status: "GPS Enabled",
+      image: "/images/tata-ace.png"
     },
     {
       name: "Tata 407",
@@ -31,7 +33,8 @@ export const GallerySection: React.FC = () => {
       bestFor: "Full Load & Part Load",
       type: "Heavy Carrier",
       desc: "Factory outlet aur warehouse supplies ke bulk orders ke liye sabse suitable truck.",
-      status: "Experienced Driver"
+      status: "Experienced Driver",
+      image: "/images/tata-407.png"
     }
   ];
 
@@ -49,7 +52,7 @@ export const GallerySection: React.FC = () => {
             <Card key={idx} hoverEffect className="bg-slate-50 border border-slate-100 flex flex-col justify-between text-left p-0">
               <div className="relative w-full aspect-video bg-slate-900 overflow-hidden">
                 <Image
-                  src="/images/hero section.png"
+                  src={vehicle.image}
                   alt={vehicle.name}
                   fill
                   className="object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"

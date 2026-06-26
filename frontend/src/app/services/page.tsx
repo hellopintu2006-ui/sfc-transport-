@@ -65,7 +65,7 @@ export default function ServicesPage() {
             </div>
           </div>
           <div className="relative aspect-video rounded-2xl overflow-hidden border border-slate-200 shadow-md">
-            <img src="/images/hero section.png" alt="Full Load Truck" className="object-cover w-full h-full" />
+            <img src="/images/full-load.png" alt="Full Load Truck" className="object-cover w-full h-full" />
           </div>
         </div>
 
