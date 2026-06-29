@@ -131,7 +131,7 @@ Pages are structured in the `frontend/src/app` directory:
 
 ### Backend (`backend/.env`)
 *   `PORT`: Port of Express server (default `5000`)
-*   `FRONTEND_URL`: URL of the frontend (for CORS policies, e.g., `http://localhost:3000`)
+*   `FRONTEND_URL`: Comma-separated URLs of the frontend allowed by CORS (e.g., `http://localhost:3000,https://sainifreightcarrier.vercel.app`)
 *   `DATABASE_URL`: Supabase Transaction Pooler URL (Prisma)
 *   `DIRECT_URL`: Supabase Direct Database URL (Prisma)
 *   `RESEND_API_KEY`: API Key for Resend mail dispatcher
