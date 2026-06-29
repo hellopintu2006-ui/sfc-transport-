@@ -190,16 +190,16 @@ export default function FeedbackPage() {
   return (
     <div className="flex flex-col w-full font-body bg-brand-bg text-left pb-16">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-primary via-blue-800 to-slate-900 text-white py-16 text-center shrink-0">
+      <section className="bg-gradient-to-br from-primary via-blue-800 to-slate-900 text-white py-16 text-center shrink-0">
         <h1 className="text-4xl md:text-5xl font-black font-heading tracking-tight mb-3">
           Customer Feedback
         </h1>
         <p className="text-base md:text-lg text-blue-100 max-w-xl mx-auto font-medium">
           Hamari services aur team ke bare me logo ke vishwas aur anubhav
         </p>
-      </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1">
+      <section className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1">
         
         {/* Left: Feedbacks List (Span 7) */}
         <div className="lg:col-span-7 space-y-6">
@@ -412,7 +412,7 @@ export default function FeedbackPage() {
           </Card>
         </div>
 
-      </div>
+      </section>
     </div>
   );
 }

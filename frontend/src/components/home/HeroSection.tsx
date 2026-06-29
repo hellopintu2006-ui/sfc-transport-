@@ -68,8 +68,8 @@ export const HeroSection: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/30 to-transparent z-10" />
       </div>
 
-      {/* Main Layout Container (Padding-top adjusted for sticky header) */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex-1 flex flex-col justify-between pt-36 pb-12">
+      {/* Main Layout Container (Padding-top adjusted for sticky transparent header) */}
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex-1 flex flex-col justify-between pt-24 pb-12">
         
         {/* Empty placeholder to occupy upper layout space */}
         <div />
@@ -109,11 +109,11 @@ export const HeroSection: React.FC = () => {
 
         </div>
 
-        {/* Bottom Bar: Statistics on Left, Interactive Slide Navigator on Right */}
+        {/* Bottom Bar: Statistics on Left, and empty space on Right */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-6">
           
           {/* Stats Section */}
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-8 md:gap-12 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-8 md:gap-12 w-full">
             <div>
               <p className="text-3xl font-black text-white leading-none">10+</p>
               <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-1.5">Routes Covered</p>
@@ -128,42 +128,6 @@ export const HeroSection: React.FC = () => {
               <p className="text-3xl font-black text-white leading-none">13 Hr</p>
               <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-1.5">Support Desk</p>
             </div>
-          </div>
-
-          {/* Slide Navigator Actions */}
-          <div className="flex items-center gap-4 bg-slate-950/60 border border-white/10 backdrop-blur-md px-5 py-2.5 rounded-full shadow-lg">
-            
-            {/* Prev/Next Navigation Controls */}
-            <div className="flex gap-2">
-              <button
-                onClick={prevSlide}
-                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-slate-950 transition-colors cursor-pointer"
-                aria-label="Previous Slide"
-              >
-                <ArrowLeft size={14} />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-slate-950 transition-colors cursor-pointer"
-                aria-label="Next Slide"
-              >
-                <ArrowRight size={14} />
-              </button>
-            </div>
-
-            {/* Slider Progress Active Bar */}
-            <div className="w-12 h-[2px] bg-white/10 relative rounded overflow-hidden">
-              <div 
-                className="absolute left-0 top-0 h-full bg-red-600 transition-all duration-300 rounded"
-                style={{ width: `${((currentSlide + 1) / HERO_SLIDES.length) * 100}%` }}
-              />
-            </div>
-
-            {/* Counter */}
-            <span className="font-heading text-xs font-bold text-slate-400">
-              <span className="text-white">0{currentSlide + 1}</span> / 0{HERO_SLIDES.length}
-            </span>
-
           </div>
 
         </div>

@@ -26,19 +26,19 @@ export default function ServicesPage() {
   return (
     <div className="flex flex-col w-full font-body bg-brand-bg text-left">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-primary via-blue-800 to-slate-900 text-white py-16 text-center shrink-0">
+      <section className="bg-gradient-to-br from-primary via-blue-800 to-slate-900 text-white py-16 text-center shrink-0">
         <h1 className="text-4xl md:text-5xl font-black font-heading tracking-tight mb-3">
           Hamari Transport Services
         </h1>
         <p className="text-base md:text-lg text-blue-100 max-w-xl mx-auto font-medium">
           Aapki har logistics aur transportation zaroorat ka single solution
         </p>
-      </div>
+      </section>
 
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 space-y-24 flex-1">
         
         {/* Full Load Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" id="full-load">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" id="full-load">
           <div className="flex flex-col gap-5">
             <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
               <Truck size={32} className="text-primary" />
@@ -67,10 +67,10 @@ export default function ServicesPage() {
           <div className="relative aspect-video rounded-2xl overflow-hidden border border-slate-200 shadow-md">
             <img src="/images/full-load.png" alt="Full Load Truck" className="object-cover w-full h-full" />
           </div>
-        </div>
+        </section>
 
         {/* Part Load Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:flex-row-reverse" id="part-load">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:flex-row-reverse" id="part-load">
           <div className="relative aspect-video rounded-2xl overflow-hidden border border-slate-200 shadow-md lg:order-last">
             <img src="/images/hero section.png" alt="Part Load Packages" className="object-cover w-full h-full" />
           </div>
@@ -99,10 +99,10 @@ export default function ServicesPage() {
               </Button>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Nag Load Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" id="nag-load">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" id="nag-load">
           <div className="flex flex-col gap-5">
             <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
               <Boxes size={32} className="text-primary" />
@@ -151,10 +151,10 @@ export default function ServicesPage() {
           <div className="relative aspect-video rounded-2xl overflow-hidden border border-slate-200 shadow-md">
             <img src="/images/hero section.png" alt="Nag Load boxes" className="object-cover w-full h-full" />
           </div>
-        </div>
+        </section>
 
         {/* Routes Table */}
-        <div id="routes-table" className="pt-8">
+        <section id="routes-table" className="pt-8">
           <SectionHeader
             title="Kaun Se Routes Cover Karte Hain"
             subtitle="Jaipur ke routes aur available services ki details"
@@ -202,7 +202,7 @@ export default function ServicesPage() {
               </table>
             </div>
           </div>
-        </div>
+        </section>
 
       </div>
 

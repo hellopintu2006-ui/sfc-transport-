@@ -34,18 +34,18 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col w-full font-body bg-brand-bg text-left">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-primary via-blue-800 to-slate-900 text-white py-16 text-center shrink-0">
+      <section className="bg-gradient-to-br from-primary via-blue-800 to-slate-900 text-white py-16 text-center shrink-0">
         <h1 className="text-4xl md:text-5xl font-black font-heading tracking-tight mb-3">
           SFC Transport ke Baare Mein
         </h1>
         <p className="text-base md:text-lg text-blue-100 max-w-xl mx-auto font-medium">
           {SITE_CONFIG.fullName}
         </p>
-      </div>
+      </section>
 
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 space-y-20 flex-1">
         {/* Story */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col gap-5">
             <h2 className="text-3xl font-extrabold font-heading text-secondary">
               Hamari Kahani
@@ -64,10 +64,10 @@ export default function AboutPage() {
               className="object-cover w-full h-full opacity-90"
             />
           </div>
-        </div>
+        </section>
 
         {/* Mission & Vision */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Card hoverEffect className="bg-white flex gap-4 p-8 border border-slate-100">
             <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center shrink-0 border border-slate-100">
               <Target className="text-secondary w-6 h-6" />
@@ -91,10 +91,10 @@ export default function AboutPage() {
               </p>
             </div>
           </Card>
-        </div>
+        </section>
 
         {/* Values */}
-        <div>
+        <section>
           <SectionHeader
             title="Hamare Siddhant (Values)"
             subtitle="Inhi chaar stambho par tika hai hamara vishwas aur hamari service quality"
@@ -115,7 +115,7 @@ export default function AboutPage() {
               </Card>
             ))}
           </div>
-        </div>
+        </section>
       </div>
 
       <CTASection />
