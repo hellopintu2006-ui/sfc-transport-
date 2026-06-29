@@ -60,16 +60,16 @@ export const RoutesSection: React.FC = () => {
               </div>
 
               {/* Route Destination Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                 {SITE_CONFIG.routes.map((route, idx) => (
                   <div
                     key={idx}
-                    className="bg-slate-800/80 backdrop-blur-sm hover:bg-slate-800 hover:border-primary border border-slate-700/60 p-3.5 rounded-xl flex items-center gap-2.5 transition-all duration-300 group shadow-md"
+                    className="bg-slate-800/80 backdrop-blur-sm hover:bg-slate-800 hover:border-primary border border-slate-700/60 p-2.5 sm:p-3.5 rounded-xl flex items-center gap-2 sm:gap-2.5 transition-all duration-300 group shadow-md"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-slate-700/50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-slate-700/50 flex items-center justify-center text-[10px] sm:text-xs text-primary group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
                       📍
                     </div>
-                    <span className="text-sm font-semibold text-slate-200 group-hover:text-white">
+                    <span className="text-xs sm:text-sm font-bold sm:font-semibold tracking-tight text-slate-200 group-hover:text-white break-words">
                       {route}
                     </span>
                   </div>

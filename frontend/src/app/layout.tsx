@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { SEO_CONFIG } from "@/config/seo.config";
 import Navbar from "@/components/layout/Navbar";
@@ -26,6 +26,13 @@ export const metadata: Metadata = {
   description: SEO_CONFIG.description,
   keywords: SEO_CONFIG.keywords,
   openGraph: SEO_CONFIG.openGraph,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0f172a",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

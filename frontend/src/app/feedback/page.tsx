@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Quote, Filter, Plus } from 'lucide-react';
+import { Quote, Plus } from 'lucide-react';
 import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { Textarea } from '@/shared/ui/Textarea';
@@ -10,57 +10,8 @@ import { Select } from '@/shared/ui/Select';
 import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/shared/ui/Badge';
 import { StarRating } from '@/shared/ui/StarRating';
-import { SectionHeader } from '@/shared/ui/SectionHeader';
 import { feedbackService, FeedbackResponse } from '@/services/feedback.service';
 import { toast } from '@/shared/hooks/useToast';
-
-const FALLBACK_FEEDBACKS = [
-  {
-    id: "f1",
-    customerName: 'Rajesh Sharma',
-    shopName: 'Sharma Electronics, Sitapura',
-    serviceUsed: 'nag-load',
-    starRating: 5,
-    serviceQuality: 'excellent',
-    deliveryOnTime: true,
-    staffBehavior: 'excellent',
-    wouldRecommend: true,
-    comment: 'VKI se Sitapura tak har ek item bilkul sahi count ke sath safely deliver ho gaya. Delivery slip me sab details proper thi. Staff ka behavior bohot achha tha.',
-    isApproved: true,
-    isFeatured: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "f2",
-    customerName: 'Vijay Saini',
-    shopName: 'Saini Kirana Store, Vatika',
-    serviceUsed: 'part-load',
-    starRating: 5,
-    serviceQuality: 'excellent',
-    deliveryOnTime: true,
-    staffBehavior: 'excellent',
-    wouldRecommend: true,
-    comment: 'Hume thoda sa maal bhejna tha, pure truck ka paisa dene ki zaroorat nahi padi. Part load option bohot badiya hai. Rate bhi bohot sahi hai.',
-    isApproved: true,
-    isFeatured: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "f3",
-    customerName: 'Amit Choudhary',
-    shopName: 'Choudhary Agro Industries, Sanganer',
-    serviceUsed: 'full-load',
-    starRating: 4,
-    serviceQuality: 'good',
-    deliveryOnTime: true,
-    staffBehavior: 'good',
-    wouldRecommend: true,
-    comment: 'SFC Transport ki service bohot fast aur reliable hai. Hamara full load maal time par bina kisi nuksan ke deliver ho gaya.',
-    isApproved: true,
-    isFeatured: true,
-    createdAt: new Date().toISOString()
-  }
-];
 
 export default function FeedbackPage() {
   const [feedbacks, setFeedbacks] = useState<FeedbackResponse[]>([]);
@@ -84,14 +35,10 @@ export default function FeedbackPage() {
   const fetchFeedbacks = async () => {
     try {
       const data = await feedbackService.getAll({});
-      if (data && data.length > 0) {
-        setFeedbacks(data);
-      } else {
-        setFeedbacks(FALLBACK_FEEDBACKS as any);
-      }
+      setFeedbacks(data || []);
     } catch (err) {
-      console.warn('Could not fetch reviews, using fallbacks:', err);
-      setFeedbacks(FALLBACK_FEEDBACKS as any);
+      console.error('Could not fetch reviews from database:', err);
+      setFeedbacks([]);
     }
   };
 
@@ -187,6 +134,9 @@ export default function FeedbackPage() {
     }
   };
 
+  // Sort reviews descending: 5-star first, then 4-star, etc.
+  const sortedFeedbacks = [...feedbacks].sort((a, b) => b.starRating - a.starRating);
+
   return (
     <div className="flex flex-col w-full font-body bg-brand-bg text-left pb-16">
       {/* Hero */}
@@ -199,74 +149,13 @@ export default function FeedbackPage() {
         </p>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1">
+      <section className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 flex flex-col gap-12 flex-1 w-full">
         
-        {/* Left: Feedbacks List (Span 7) */}
-        <div className="lg:col-span-7 space-y-6">
-          <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-brand-border">
-            <h3 className="text-lg font-bold font-heading text-slate-900 flex items-center gap-2">
-              <span>💬</span> Customer Reviews
-            </h3>
-          </div>
-
-          <div className="space-y-4">
-            {feedbacks.length === 0 ? (
-              <p className="text-center py-12 text-slate-500 text-sm">No reviews available.</p>
-            ) : (
-              <>
-                {feedbacks.slice(0, 3).map((fb) => (
-                  <Card key={fb.id} className="bg-white border border-slate-100 flex flex-col gap-4 text-left p-6">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-heading font-bold text-slate-900">{fb.customerName}</h4>
-                        {fb.shopName && <p className="text-xs text-text-secondary mt-0.5">{fb.shopName}</p>}
-                      </div>
-                      <Quote size={20} className="text-primary/10 shrink-0" />
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <StarRating rating={fb.starRating} starSize={14} />
-                      <Badge variant="primary" className="text-[10px] capitalize">
-                        {fb.serviceUsed.replace('-', ' ')}
-                      </Badge>
-                    </div>
-
-                    {fb.comment && (
-                      <p className="text-sm text-text-secondary leading-relaxed italic">
-                        "{fb.comment}"
-                      </p>
-                    )}
-
-                    <div className="border-t border-slate-50 pt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-400">
-                      <span>Quality: <strong className="capitalize text-slate-500 font-medium">{fb.serviceQuality}</strong></span>
-                      <span>Staff: <strong className="capitalize text-slate-500 font-medium">{fb.staffBehavior}</strong></span>
-                      <span>On Time: <strong className="text-slate-500 font-medium">{fb.deliveryOnTime ? 'Yes' : 'No'}</strong></span>
-                    </div>
-                  </Card>
-                ))}
-
-                {feedbacks.length > 0 && (
-                  <div className="text-center pt-2">
-                    <Link href="/feedback/all" passHref legacyBehavior>
-                      <Button
-                        variant="outline"
-                        className="w-full py-3 justify-center gap-2 cursor-pointer font-bold"
-                      >
-                        🔍 View All Reviews ({feedbacks.length})
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Right: Submit Form (Span 5) */}
-        <div className="lg:col-span-5" id="submit">
-          <Card className="bg-white border border-slate-200/80 p-6">
-            <h3 className="text-xl font-bold font-heading text-slate-900 border-b border-slate-100 pb-3 mb-6">
-              Apna Review Likhein
+        {/* Top: Submit Form (Centered and larger on desktop) */}
+        <div className="max-w-3xl mx-auto w-full" id="submit">
+          <Card className="bg-white border border-slate-200/80 p-8 md:p-10 shadow-md hover:shadow-xl hover:scale-[1.01] hover:border-primary/20 transition-all duration-300 group">
+            <h3 className="text-2xl font-bold font-heading text-slate-900 border-b border-slate-100 pb-4 mb-6 flex items-center gap-2">
+              📝 Apna Review Likhein
             </h3>
 
             {submitSuccess ? (
@@ -276,30 +165,39 @@ export default function FeedbackPage() {
                 <p className="text-sm text-text-secondary leading-relaxed">
                   Aapka review submit ho gaya hai. Admin review ke baad yeh website par live show hone lagega.
                 </p>
-                <Button variant="outline" size="sm" onClick={() => setSubmitSuccess(false)} className="w-full">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setSubmitSuccess(false)} 
+                  className="w-full hover:scale-105 hover:bg-slate-50 active:scale-95 transition-all duration-200"
+                >
                   Naya Review Dijiye
                 </Button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <Input
-                  id="customerName"
-                  label="Aapka Naam (Required)"
-                  placeholder="Naam likhein"
-                  value={formData.customerName}
-                  onChange={handleInputChange}
-                  error={errors.customerName}
-                />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Input
+                    id="customerName"
+                    label="Aapka Naam (Required)"
+                    placeholder="Naam likhein"
+                    value={formData.customerName}
+                    onChange={handleInputChange}
+                    error={errors.customerName}
+                    className="focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200"
+                  />
 
-                <Input
-                  id="shopName"
-                  label="Dukaan / Company Naam (Optional)"
-                  placeholder="Dukaan ka naam likhein"
-                  value={formData.shopName}
-                  onChange={handleInputChange}
-                />
+                  <Input
+                    id="shopName"
+                    label="Dukaan / Company Naam (Optional)"
+                    placeholder="Dukaan ka naam likhein"
+                    value={formData.shopName}
+                    onChange={handleInputChange}
+                    className="focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200"
+                  />
+                </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Select
                     id="serviceUsed"
                     label="Service Used"
@@ -310,17 +208,18 @@ export default function FeedbackPage() {
                     ]}
                     value={formData.serviceUsed}
                     onChange={handleServiceChange}
+                    className="focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200"
                   />
 
                   <div className="flex flex-col gap-1.5">
                     <label className="text-sm font-medium text-text-primary">Star Rating</label>
                     <div className="py-2.5">
-                      <StarRating rating={formData.starRating} interactive onChange={handleRatingChange} starSize={18} />
+                      <StarRating rating={formData.starRating} interactive onChange={handleRatingChange} starSize={22} />
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Select
                     id="serviceQuality"
                     label="Service Quality"
@@ -332,6 +231,7 @@ export default function FeedbackPage() {
                     ]}
                     value={formData.serviceQuality}
                     onChange={handleQualityChange}
+                    className="focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200"
                   />
                   <Select
                     id="staffBehavior"
@@ -344,18 +244,19 @@ export default function FeedbackPage() {
                     ]}
                     value={formData.staffBehavior}
                     onChange={handleStaffChange}
+                    className="focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 bg-slate-50 border border-slate-200/50 rounded-lg p-3 text-xs">
-                  <div>
-                    <p className="font-semibold text-text-primary mb-2">Delivery On Time?</p>
-                    <div className="flex gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 border border-slate-200/50 rounded-xl p-4 text-sm">
+                  <div className="space-y-2">
+                    <p className="font-semibold text-text-primary">Delivery On Time?</p>
+                    <div className="flex gap-3">
                       <button
                         type="button"
                         onClick={() => handleToggle('deliveryOnTime', true)}
-                        className={`px-3 py-1 rounded border font-bold cursor-pointer ${
-                          formData.deliveryOnTime ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200'
+                        className={`px-4 py-1.5 rounded-lg border font-bold cursor-pointer hover:scale-105 active:scale-95 transition-all duration-200 ${
+                          formData.deliveryOnTime ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                         }`}
                       >
                         Yes
@@ -363,22 +264,22 @@ export default function FeedbackPage() {
                       <button
                         type="button"
                         onClick={() => handleToggle('deliveryOnTime', false)}
-                        className={`px-3 py-1 rounded border font-bold cursor-pointer ${
-                          !formData.deliveryOnTime ? 'bg-secondary text-white border-secondary' : 'bg-white text-slate-600 border-slate-200'
+                        className={`px-4 py-1.5 rounded-lg border font-bold cursor-pointer hover:scale-105 active:scale-95 transition-all duration-200 ${
+                          !formData.deliveryOnTime ? 'bg-secondary text-white border-secondary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                         }`}
                       >
                         No
                       </button>
                     </div>
                   </div>
-                  <div>
-                    <p className="font-semibold text-text-primary mb-2">Would Recommend?</p>
-                    <div className="flex gap-2">
+                  <div className="space-y-2">
+                    <p className="font-semibold text-text-primary">Would Recommend?</p>
+                    <div className="flex gap-3">
                       <button
                         type="button"
                         onClick={() => handleToggle('wouldRecommend', true)}
-                        className={`px-3 py-1 rounded border font-bold cursor-pointer ${
-                          formData.wouldRecommend ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200'
+                        className={`px-4 py-1.5 rounded-lg border font-bold cursor-pointer hover:scale-105 active:scale-95 transition-all duration-200 ${
+                          formData.wouldRecommend ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                         }`}
                       >
                         Yes
@@ -386,8 +287,8 @@ export default function FeedbackPage() {
                       <button
                         type="button"
                         onClick={() => handleToggle('wouldRecommend', false)}
-                        className={`px-3 py-1 rounded border font-bold cursor-pointer ${
-                          !formData.wouldRecommend ? 'bg-secondary text-white border-secondary' : 'bg-white text-slate-600 border-slate-200'
+                        className={`px-4 py-1.5 rounded-lg border font-bold cursor-pointer hover:scale-105 active:scale-95 transition-all duration-200 ${
+                          !formData.wouldRecommend ? 'bg-secondary text-white border-secondary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                         }`}
                       >
                         No
@@ -402,14 +303,94 @@ export default function FeedbackPage() {
                   placeholder="Apna experience detail me likhein..."
                   value={formData.comment}
                   onChange={handleInputChange}
+                  rows={4}
+                  className="focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200"
                 />
 
-                <Button type="submit" variant="primary" isLoading={loading} className="w-full py-3 justify-center gap-1">
-                  <Plus size={16} /> Review Submit Karein
+                <Button 
+                  type="submit" 
+                  variant="primary" 
+                  isLoading={loading} 
+                  className="w-full py-4 justify-center gap-1.5 font-bold hover:scale-[1.02] hover:shadow-lg active:scale-95 transition-all duration-200"
+                >
+                  <Plus size={18} /> Review Submit Karein
                 </Button>
               </form>
             )}
           </Card>
+        </div>
+
+        {/* Bottom: Feedbacks List */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-brand-border shadow-sm">
+            <h3 className="text-xl font-bold font-heading text-slate-900 flex items-center gap-2">
+              <span>💬</span> Customer Reviews
+            </h3>
+          </div>
+
+          {sortedFeedbacks.length === 0 ? (
+            <div className="bg-white border border-brand-border rounded-2xl p-12 text-center text-slate-500">
+              No reviews available yet. Be the first to write a review!
+            </div>
+          ) : (
+            <div className="relative w-full">
+              {/* Horizontal scroll container on desktop, vertical list on mobile */}
+              <div className="flex flex-col md:flex-row md:overflow-x-auto gap-6 pb-6 pt-2 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent scroll-smooth">
+                {sortedFeedbacks.map((fb) => (
+                  <Card 
+                    key={fb.id} 
+                    className="bg-white border border-slate-100 flex flex-col gap-4 text-left p-6 hover:shadow-lg hover:border-primary/20 hover:scale-[1.02] transition-all duration-300 md:w-[420px] md:min-w-[420px] shrink-0 shadow-sm"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-heading font-bold text-slate-900 text-lg">{fb.customerName}</h4>
+                        {fb.shopName && <p className="text-xs text-text-secondary mt-0.5">{fb.shopName}</p>}
+                      </div>
+                      <Quote size={20} className="text-primary/10 shrink-0" />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <StarRating rating={fb.starRating} starSize={14} />
+                      <Badge variant="primary" className="text-[10px] capitalize">
+                        {fb.serviceUsed.replace('-', ' ')}
+                      </Badge>
+                    </div>
+
+                    {fb.comment && (
+                      <p className="text-sm text-text-secondary leading-relaxed italic flex-1">
+                        "{fb.comment}"
+                      </p>
+                    )}
+
+                    <div className="border-t border-slate-50 pt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-400">
+                      <span>Quality: <strong className="capitalize text-slate-500 font-medium">{fb.serviceQuality}</strong></span>
+                      <span>Staff: <strong className="capitalize text-slate-500 font-medium">{fb.staffBehavior}</strong></span>
+                      <span>On Time: <strong className="text-slate-500 font-medium">{fb.deliveryOnTime ? 'Yes' : 'No'}</strong></span>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+              
+              {/* Desktop Scroll Indicator Helper */}
+              <div className="hidden md:flex justify-end text-xs text-slate-400 gap-1.5 mt-2 items-center">
+                <span>Swipe left/right to view more reviews</span>
+                <span>↔</span>
+              </div>
+            </div>
+          )}
+
+          {sortedFeedbacks.length > 0 && (
+            <div className="text-center pt-4">
+              <Link href="/feedback/all" passHref legacyBehavior>
+                <Button
+                  variant="outline"
+                  className="w-full md:w-auto md:px-8 py-3.5 justify-center gap-2 cursor-pointer font-bold border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-primary hover:border-primary hover:scale-105 active:scale-95 transition-all duration-200 shadow-sm"
+                >
+                  🔍 View All Reviews ({sortedFeedbacks.length})
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
 
       </section>

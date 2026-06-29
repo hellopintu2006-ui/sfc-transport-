@@ -34,11 +34,11 @@ export const SITE_CONFIG = {
     "Sanganer",
     "Tonk Road",
     "Goner",
-    "Shivdaspura",
     "Beelwa",
     "Chaksu",
-    "Mansarovar",
     "Pratap Nagar",
+    "Mansarovar",
+    "Shivdaspura",
   ],
   
   services: [

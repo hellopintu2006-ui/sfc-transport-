@@ -76,7 +76,7 @@ export const Navbar: React.FC = () => {
                 alt="SFC Transport Logo"
                 fill
                 sizes="144px"
-                className="object-contain"
+                className="object-contain scale-[1.20]"
                 priority
               />
             </Link>
@@ -149,7 +149,7 @@ export const Navbar: React.FC = () => {
                   alt="SFC Transport Logo"
                   fill
                   sizes="96px"
-                  className="object-contain"
+                  className="object-contain scale-[1.22]"
                   priority
                 />
               </Link>
@@ -165,7 +165,7 @@ export const Navbar: React.FC = () => {
 
           {/* Mobile Navigation Drawer */}
           {isOpen && (
-            <div className="lg:hidden absolute left-4 right-4 mt-3 bg-slate-950/95 border border-white/10 rounded-3xl p-5 shadow-2xl flex flex-col gap-3 z-50 backdrop-blur-xl animate-in fade-in slide-in-from-top-4 duration-200">
+            <div className="lg:hidden absolute left-4 right-4 mt-3 bg-slate-950/95 border border-white/10 rounded-3xl p-5 shadow-2xl flex flex-col gap-3 z-50 backdrop-blur-xl animate-in fade-in slide-in-from-top-4 duration-200 max-h-[calc(100vh-100px)] overflow-y-auto">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (

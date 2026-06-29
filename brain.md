@@ -118,7 +118,8 @@ Pages are structured in the `frontend/src/app` directory:
 | `/career` | `src/app/career/page.tsx` | Career/hiring page. |
 | `/contact` | `src/app/contact/page.tsx` | Support/contact form submission interface. |
 | `/customer-portal` | `src/app/customer-portal/page.tsx` | Portal for customers. |
-| `/feedback` | `src/app/feedback/page.tsx` | Service review and rating submission page. |
+| `/feedback` | `src/app/feedback/page.tsx` | Service review and rating submission page. Form on top (enlarged), reviews at bottom sorted by rating descending (5-star first), scrollable horizontally on desktop. |
+| `/feedback/all` | `src/app/feedback/all/page.tsx` | Dedicated page displaying all approved client reviews from database, sorted by rating descending. |
 | `/fleet` | `src/app/fleet/page.tsx` | Page listing transport vehicle categories. |
 | `/quote` | `src/app/quote/page.tsx` | Pricing quote request form. |
 | `/rate-card` | `src/app/rate-card/page.tsx` | Interactive rate cards for shipping routes. |
