@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 import { Resend } from 'resend';
 import prisma from '../lib/prisma';
+import { logger } from '../lib/logger';
 
 // Zod Schema for contact validation
 const contactSchema = z.object({
@@ -14,7 +15,9 @@ const contactSchema = z.object({
 
 export const submitContact = async (req: Request, res: Response) => {
   try {
-    const ip = (req.headers['x-forwarded-for'] as string) || req.ip || 'unknown';
+    const rawIp = (req.headers['x-forwarded-for'] as string) || req.ip || 'unknown';
+    // Extract actual client IP from proxy list
+    const ip = rawIp.split(',')[0].trim();
     const identifier = `contact:${ip}`;
 
     // Simple Rate Limiting Check using the database (max 5 contact requests per hour)
@@ -26,6 +29,7 @@ export const submitContact = async (req: Request, res: Response) => {
     if (rateLimit) {
       if (now < rateLimit.resetAt) {
         if (rateLimit.count >= 5) {
+          logger.warn(`Rate limit triggered for contact submission by IP: ${ip}`);
           return res.status(429).json({
             error: 'Too many contact submissions. Please try again after some time.',
           });
@@ -98,13 +102,13 @@ export const submitContact = async (req: Request, res: Response) => {
             <p style="font-size: 12px; color: #888;">Submitted from IP: ${ip} at ${now.toLocaleString()}</p>
           `,
         });
-        console.log('Notification email sent successfully via Resend.');
+        logger.info(`Notification email sent successfully via Resend for submission: ${submission.id}`);
       } catch (emailErr) {
-        console.error('Failed to send email via Resend:', emailErr);
+        logger.error(`Failed to send email via Resend for submission: ${submission.id}`, emailErr);
         // Do not fail the API request if email sending fails, as database write succeeded
       }
     } else {
-      console.warn('RESEND_API_KEY is not configured. Email notification skipped.');
+      logger.warn('RESEND_API_KEY is not configured. Email notification skipped.');
     }
 
     return res.status(201).json({
@@ -115,7 +119,7 @@ export const submitContact = async (req: Request, res: Response) => {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors });
     }
-    console.error('Contact submission error:', error);
+    logger.error('Contact submission error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };

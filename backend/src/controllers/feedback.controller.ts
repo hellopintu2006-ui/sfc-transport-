@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../lib/prisma';
+import { logger } from '../lib/logger';
 
 // Zod Schema for feedback validation
 const feedbackSchema = z.object({
@@ -17,7 +18,9 @@ const feedbackSchema = z.object({
 
 export const submitFeedback = async (req: Request, res: Response) => {
   try {
-    const ip = (req.headers['x-forwarded-for'] as string) || req.ip || 'unknown';
+    const rawIp = (req.headers['x-forwarded-for'] as string) || req.ip || 'unknown';
+    // Extract actual client IP from proxy list
+    const ip = rawIp.split(',')[0].trim();
     const identifier = `feedback:${ip}`;
     
     // Simple Rate Limiting Check using the database
@@ -29,6 +32,7 @@ export const submitFeedback = async (req: Request, res: Response) => {
     if (rateLimit) {
       if (now < rateLimit.resetAt) {
         if (rateLimit.count >= 3) {
+          logger.warn(`Rate limit triggered for feedback submission by IP: ${ip}`);
           return res.status(429).json({
             error: 'Too many feedback requests. Please try again after some time.',
           });
@@ -70,6 +74,8 @@ export const submitFeedback = async (req: Request, res: Response) => {
       },
     });
 
+    logger.info(`Feedback submitted successfully from IP: ${ip}`, { feedbackId: feedback.id });
+
     return res.status(201).json({
       message: 'Feedback submitted successfully. It will be visible after review.',
       feedback,
@@ -78,7 +84,7 @@ export const submitFeedback = async (req: Request, res: Response) => {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors });
     }
-    console.error('Submit feedback error:', error);
+    logger.error('Submit feedback error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -113,7 +119,7 @@ export const getFeedbackList = async (req: Request, res: Response) => {
 
     return res.status(200).json(feedbacks);
   } catch (error) {
-    console.error('Get feedback list error:', error);
+    logger.error('Get feedback list error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
